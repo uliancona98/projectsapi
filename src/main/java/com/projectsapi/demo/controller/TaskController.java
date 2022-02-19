@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 import com.projectsapi.demo.dto.ErrorDTO;
 import com.projectsapi.demo.dto.TaskDTO;
 import com.projectsapi.demo.dto.request.TaskRequest;
