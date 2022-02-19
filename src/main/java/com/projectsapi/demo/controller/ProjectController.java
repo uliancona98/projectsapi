@@ -95,8 +95,8 @@ public class ProjectController {
 	@ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "successful operation",
                 content = @Content(schema = @Schema(implementation = ProjectDTO.class))),
-		@ApiResponse(responseCode = "404", description = "Contact not found") ,
-		@ApiResponse(responseCode = "409", description = "Bad request")
+		@ApiResponse(responseCode = "404", description = "Project not found") ,
+		@ApiResponse(responseCode = "400", description = "Bad request")
 	})
 	public ResponseEntity<Object> getProjectById(@Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("projectId") Integer projectId){
 		try {
@@ -152,8 +152,8 @@ public class ProjectController {
         @ApiResponse(responseCode = "201", description = "Projects created",
                 content = @Content(schema = @Schema(implementation = ProjectDTO.class))), 
         @ApiResponse(responseCode = "400", description = "Invalid input"), 
-        @ApiResponse(responseCode = "409", description = "Contact already exists") })
-	public ResponseEntity<Object> addProject(@RequestBody @Valid  ProjectRequest projectRequest, BindingResult result){
+        @ApiResponse(responseCode = "404", description = "Project or developers not found") })
+	public ResponseEntity<Object> addProject(@RequestBody @Valid  @Parameter(description="Project reques ", required=true) ProjectRequest projectRequest, @Parameter(description="Binding result from request validations", required=true) BindingResult result){
 		try{
 			if(result.hasErrors()) {
 			 	String errorsString = "";
@@ -175,7 +175,14 @@ public class ProjectController {
 
 	@PutMapping("/{projectId}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_OWNER')")
-	public ResponseEntity<Object> editProject(@RequestBody @Valid ProjectRequest projectRequest, BindingResult result, @Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("projectId")Integer projectId)throws URISyntaxException{
+    @Operation(summary = "Update an existing project", description = "Edit an project", tags = { "projects" })
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "successful operation",
+		content = @Content(schema = @Schema(implementation = ProjectDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Bad request"),
+        @ApiResponse(responseCode = "404", description = "Project or workers not found")
+	})
+	public ResponseEntity<Object> editProject(@RequestBody @Valid @Parameter(description="Project request", required=true) ProjectRequest projectRequest, @Parameter(description="Binding result from request validations", required=true) BindingResult result, @Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("projectId")Integer projectId)throws URISyntaxException{
 		try{
 			if(result.hasErrors()) {
 			 	String errorsString = "";
@@ -206,7 +213,14 @@ public class ProjectController {
 
 	@PatchMapping("/{projectId}/developers")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_OWNER')")
-	public ResponseEntity<Object> editProjectDevelopers(@RequestBody @Valid List<Integer> developers, BindingResult result, @Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("projectId") Integer projectId)throws URISyntaxException{
+    @Operation(summary = "Update the developers list from existing project", description = "Edit the project's developers from existing project", tags = { "projects" })
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "successful operation",
+                content = @Content(array = @ArraySchema(schema = @Schema(implementation = WorkerDTO.class)))),
+        @ApiResponse(responseCode = "400", description = "Bad request"),
+        @ApiResponse(responseCode = "404", description = "Project or workers not found")
+	})
+	public ResponseEntity<Object> editProjectDevelopers(@RequestBody @Valid @Parameter(description="List of developers ids", required=true) List<Integer> developers, @Parameter(description="Binding result from request validations", required=true) BindingResult result, @Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("projectId") Integer projectId)throws URISyntaxException{
 		try{
 			if(result.hasErrors()) {
 			 	String errorsString = "";
@@ -237,6 +251,12 @@ public class ProjectController {
 
 	@GetMapping("/{projectId}/disable")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@Operation(summary = "Disable an specific project", description = "Endpoint that disable an specific project", tags = { "projects" }) 
+	@ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "successful operation",
+                content = @Content(array = @ArraySchema(schema = @Schema(implementation = WorkerDTO.class)))),
+		@ApiResponse(responseCode = "404", description = "Project not found")
+	})
 	public ResponseEntity<Object> disableProject(@Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("projectId") Integer projectId){
 		try {
 			return new ResponseEntity<>(projectService.disableProjectById(projectId), HttpStatus.OK);
@@ -257,12 +277,11 @@ public class ProjectController {
 
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("message", message);
-	    return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+	    return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(InvalidFormatException.class)
 	public ResponseEntity<?> handleTypeMismatch(InvalidFormatException ex) {
-
 		String name = ex.getValue().toString();
 		String type = ex.getTargetType().getSimpleName();
 		Object value = ex.getValue();

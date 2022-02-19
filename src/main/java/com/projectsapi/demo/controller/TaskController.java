@@ -78,6 +78,13 @@ public class TaskController {
 	//admin, project owner of the project, DEVELOPER
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_OWNER', 'ROLE_USER')")
 	@GetMapping("/{idProject}/tasks/{idTask}")
+	@Operation(summary = "Find specific project task", description = "Endpoint that retieves an specific project task", tags = { "taks" }) 
+	@ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "successful operation",
+                content = @Content(schema = @Schema(implementation = TaskDTO.class))),
+		@ApiResponse(responseCode = "404", description = "Project task not found") ,
+		@ApiResponse(responseCode = "400", description = "Bad request")
+	})
 	public ResponseEntity<Object> getTaskByIdFromProject( @Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("idProject") Integer idProject, @Parameter(description="Id of the task to be obtained. Cannot be empty.", required=true) @PathVariable("idTask") Integer idTask){
 		try {
 			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -100,7 +107,14 @@ public class TaskController {
 	//admin, project owner of the project
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_OWNER')")
 	@PostMapping("/{idProject}/tasks")
-	public ResponseEntity<Object> addTaskToProject(@Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("idProject") Integer idProject, @RequestBody @Valid TaskRequest taskRequest, BindingResult result){
+	@Operation(summary = "Add a new project", description = "", tags = { "tasks" })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "201", description = "Project task created",
+                content = @Content(schema = @Schema(implementation = TaskDTO.class))), 
+        @ApiResponse(responseCode = "400", description = "Invalid input"),
+		@ApiResponse(responseCode = "409", description = "Task already exists"), 
+        @ApiResponse(responseCode = "404", description = "Project not found") })
+	public ResponseEntity<Object> addTaskToProject(@Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("idProject") Integer idProject, @RequestBody @Valid @Parameter(description="Task request", required=true) TaskRequest taskRequest,  @Parameter(description="Binding result from request validations", required=true) BindingResult result){
 		try{
 			if(result.hasErrors()) {
 			 	String errorsString = "";
@@ -135,7 +149,14 @@ public class TaskController {
 	//admin, project owner of the project
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_OWNER')")
 	@PutMapping("/{idProject}/tasks/{idTask}")
-	public ResponseEntity<Object> editProjectTask(@RequestBody @Valid  TaskUpdateRequest taskRequest,  BindingResult result, @Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("idProject") Integer idProject, @Parameter(description="Id of the task to be obtained. Cannot be empty.", required=true) @PathVariable("idTask") Integer idTask)throws URISyntaxException{
+    @Operation(summary = "Update an existing project task", description = "Edit an project task", tags = { "tasks" })
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "successful operation",
+		content = @Content(schema = @Schema(implementation = TaskDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Bad request"),
+        @ApiResponse(responseCode = "404", description = "Task not found")
+	})
+	public ResponseEntity<Object> editProjectTask(@RequestBody @Valid  @Parameter(description="Task update request", required=true) TaskUpdateRequest taskRequest,   @Parameter(description="Binding result from request validations", required=true) BindingResult result, @Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("idProject") Integer idProject, @Parameter(description="Id of the task to be obtained. Cannot be empty.", required=true) @PathVariable("idTask") Integer idTask)throws URISyntaxException{
 		try{
 			if(result.hasErrors()) {
 			 	String errorsString = "";
@@ -175,7 +196,7 @@ public class TaskController {
 
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("message", message);
-	    return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+	    return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(InvalidFormatException.class)
