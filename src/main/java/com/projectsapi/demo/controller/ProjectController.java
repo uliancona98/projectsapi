@@ -28,8 +28,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,6 +45,9 @@ import com.projectsapi.demo.exception.NotFoundException;
 import com.projectsapi.demo.service.ProjectService;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
+@OpenAPIDefinition(
+        info = @Info(title = "PROJECTS MANAGAMENET API", version = "v1")
+)
 
 @RestController
 @RequestMapping("/projects")
