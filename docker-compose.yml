@@ -1,18 +1,18 @@
 version: "3.7"
 services:
   api_service:
-    build: .
+    build: ./demo
     restart: always
     ports:
-      - 8080:8080
+      - 8090:8090
     depends_on:
-      - postgres_db
-  postgres_db:
-    image: "postgres:11.4"
-    restart: always
+      - db
+  db:
+    build: ./db
+    container_name: postgres
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
-      POSTGRES_DB: projectsapi
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=projectsapi
