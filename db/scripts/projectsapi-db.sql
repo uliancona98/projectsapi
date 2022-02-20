@@ -6,6 +6,16 @@
 -- Dumped by pg_dump version 14.1
 
 -- Started on 2022-02-19 02:02:42
+CREATE DATABASE "projectsapi";
+\c projectsapi
+DROP TABLE IF EXISTS projects_developers;
+DROP TABLE IF EXISTS workers;
+DROP TABLE IF EXISTS tasks;
+DROP TABLE IF EXISTS projects;
+DROP table IF EXISTS authorities; 
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE public.authorities (
     username character varying NOT NULL,
     authority character varying NOT NULL
@@ -363,4 +373,3 @@ ALTER TABLE ONLY public.tasks
 --
 -- PostgreSQL database dump complete
 --
-
