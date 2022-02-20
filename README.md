@@ -1,42 +1,9 @@
-Requisitos:
-    Tener instalado docker
-    
-Pasos para ejecutar el programa:
-Ejecutar el comando: docker-compose up
+# Projects Management Module integrated with Oauth 2.0 Security Module
 
-Para autenticación se tiene las siguientes credenciales:
-1. usuario:
-uancona
-Contraseña:
-admin
-
-2. usuario:
-sbojorquez
-Contraseña:
-admin
-
-3. usuario:
-user
-Contraseña:
-admin
-
-4. usuario:
-ulisesa
-Contraseña:
-admin
-
-Para ver la documentacionen swagger:
-http://localhost:8090/swagger-ui/index.html
-
-
-# Resume module service with Oauth 2.0 Security
-
-This is an implementation using Oauth 2.0 as a client server for security. The service has the 
-same funcionality of view, create and edit of employee's resumes with scopes defined as roles
-ROLE_USER, ROLE_MANAGER, ROLE_ADMIN
+This is a project that manages differents software projects and their tasks, in order to track them. This project in integrated with Oauth 2.0 security module in order to make the service secure.
 
 ## Requirements
-Docker desktop
+- Docker desktop installed
 
 ## How to run the program
 
