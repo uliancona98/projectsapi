@@ -116,26 +116,6 @@ public class ProjectServiceImpl implements ProjectService {
         List<Project> pageProjects = projectRepository.findByProjectOwner(projectOwner.get());
         List<ProjectDTO> listTasks = pageProjects.stream().map(this::convertProjectToDTO).collect(Collectors.toList());
         return listTasks;
-        /*Page<Project> pageProjects2 = projectRepository.findAll(projectSpecification, pageable);
-
-
-        List<ProjectDTO> listProjects = pageProjects2.getContent().stream().map(this::convertProjectToDTO).collect(Collectors.toList());
-        List<ProjectDTO> listProjectsNew = new ArrayList();
-        for (ProjectDTO project: listProjects) {
-
-            if (project.getProjectOwner().equals(projectOwner)) {
-
-                listProjectsNew.add(project);
-            }
-        }
-        PagedResult<ProjectDTO> projectsDTO =  new PagedResult<ProjectDTO>();
-        projectsDTO.setData(listProjects);
-        projectsDTO.setPageNumber(pageProjects.getNumber());
-        projectsDTO.setPageSize(pageProjects.getSize());
-        projectsDTO.setTotalElements(pageProjects.getTotalElements());
-        projectsDTO.setTotalPages(pageProjects.getTotalPages());
-
-        return projectsDTO;*/
     }
     //Admin-project_owner only his projets
     @Override
