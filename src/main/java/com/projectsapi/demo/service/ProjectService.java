@@ -16,7 +16,7 @@ public interface ProjectService {
 
 	PagedResult<ProjectDTO> findAll(String search, Pageable pageable);
 
-	PagedResult<ProjectDTO> findMyProjects(String username, String search, Pageable pageable);
+	List<ProjectDTO> findMyProjects(String username);
 
 	ProjectDTO findProjectById(Integer projectId, String username, boolean isAdmin);
 

@@ -1,5 +1,6 @@
 package com.projectsapi.demo.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -110,30 +111,23 @@ public class ProjectServiceImpl implements ProjectService {
     //project_owner
     @Override
     @Transactional(readOnly = true)
-    public PagedResult<ProjectDTO> findMyProjects(String username, String search, Pageable pageable) {
-        Specification<Project> projectSpecification = Specification.where(null);
-        if(search!=null){
-            Specification<Project> nameSpecification = Specification.where(new ProjectSpecification(new SearchCriteria("name", "∼", search)));
-            projectSpecification = projectSpecification.or(nameSpecification);
-
-            Specification<Project> descrSpecification = Specification.where(new ProjectSpecification(new SearchCriteria("description", "∼", search)));
-            projectSpecification = projectSpecification.or(descrSpecification);
-
-            /*Specification<Project> projectStateSpecification = Specification.where(new ProjectSpecification(new SearchCriteria("state", "∼", search)));
-            projectSpecification = projectSpecification.or(projectStateSpecification);
-
-            Specification<Project> descriTaskSpecification = Specification.where(new ProjectSpecification(new SearchCriteria("description_task", "∼", search)));
-            projectSpecification = projectSpecification.or(descriTaskSpecification);
-
-            Specification<Project> taskTypeSpecification = Specification.where(new ProjectSpecification(new SearchCriteria("type", "∼", search)));
-            projectSpecification = projectSpecification.or(taskTypeSpecification);*/
-        }
-
+    public List<ProjectDTO> findMyProjects(String username) {
         Optional<Worker> projectOwner = workerRepository.findByUsername(username);
+        List<Project> pageProjects = projectRepository.findByProjectOwner(projectOwner.get());
+        List<ProjectDTO> listTasks = pageProjects.stream().map(this::convertProjectToDTO).collect(Collectors.toList());
+        return listTasks;
+        /*Page<Project> pageProjects2 = projectRepository.findAll(projectSpecification, pageable);
 
-        Page<Project> pageProjects = projectRepository.findByProjectOwner(projectSpecification, pageable, projectOwner.get());
-        
-        List<ProjectDTO> listProjects = pageProjects.getContent().stream().map(this::convertProjectToDTO).collect(Collectors.toList());
+
+        List<ProjectDTO> listProjects = pageProjects2.getContent().stream().map(this::convertProjectToDTO).collect(Collectors.toList());
+        List<ProjectDTO> listProjectsNew = new ArrayList();
+        for (ProjectDTO project: listProjects) {
+
+            if (project.getProjectOwner().equals(projectOwner)) {
+
+                listProjectsNew.add(project);
+            }
+        }
         PagedResult<ProjectDTO> projectsDTO =  new PagedResult<ProjectDTO>();
         projectsDTO.setData(listProjects);
         projectsDTO.setPageNumber(pageProjects.getNumber());
@@ -141,7 +135,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectsDTO.setTotalElements(pageProjects.getTotalElements());
         projectsDTO.setTotalPages(pageProjects.getTotalPages());
 
-        return projectsDTO;
+        return projectsDTO;*/
     }
     //Admin-project_owner only his projets
     @Override
@@ -151,7 +145,7 @@ public class ProjectServiceImpl implements ProjectService {
             if( isAdmin || validateIfBelongsToProjectOwnerFromProject(username, optProject.get())){
                 return convertProjectToDTO(optProject.get());
             }
-            throw new UnsupportedOperationException("You can't get this project");
+            throw new UnsupportedOperationException("You can't get this project beacuse you dont belong to it");
         }
         throw new NotFoundException("Project " + projectId + " was not found");
     }
@@ -198,7 +192,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .map(this::convertDeveloperToDTO)
                 .collect(Collectors.toSet());
             }
-            throw new UnsupportedOperationException("Can't get this project");
+            throw new UnsupportedOperationException("Can't get this project beacuse you dont belong to it");
         }
         throw new NotFoundException("Project " + projectId + " was not found");
         
@@ -228,7 +222,7 @@ public class ProjectServiceImpl implements ProjectService {
                 }
                 throw new UnsupportedOperationException("Can't upload disabled projects");
             }
-            throw new UnsupportedOperationException("Can't edit this project");
+            throw new UnsupportedOperationException("Can't edit this project beacuse you dont belong to it");
         }
         throw new NotFoundException("Project " + id + " was not found"); 
     }
@@ -268,7 +262,7 @@ public class ProjectServiceImpl implements ProjectService {
                 }
                 throw new UnsupportedOperationException("Can't upload disabled projects");
             }
-            throw new UnsupportedOperationException("Can't edit this project");
+            throw new UnsupportedOperationException("Can't edit this project beacuse you dont belong to it");
         }
         throw new NotFoundException("Project " + id + " was not found");       
     }

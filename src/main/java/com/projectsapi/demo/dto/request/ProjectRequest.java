@@ -11,6 +11,8 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.projectsapi.demo.model.ProjectStatus;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 public class ProjectRequest {
     @NotNull
@@ -32,6 +34,7 @@ public class ProjectRequest {
     private Date startDate;
 
     @NotNull
+    @Schema(type = "string", allowableValues = { "ready", "active", "finished", "paused", "disabled"})
     private ProjectStatus state;
 
     @NotNull

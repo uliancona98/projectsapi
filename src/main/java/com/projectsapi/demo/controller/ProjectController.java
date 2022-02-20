@@ -76,16 +76,13 @@ public class ProjectController {
 	@ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "successful operation", 
 			content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectDTO.class)))) })
-	public ResponseEntity<Object> findMyProjects(
-		@Parameter(description="Value to search") @RequestParam(name="search", required = false) String search,
-		@Parameter(description="Pageable object with parameters as: page, size, sort") Pageable pageable
-	){
+	public ResponseEntity<Object> findMyProjects(){
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = null;
 		if (principal instanceof UserDetails) {
 			username = ((UserDetails)principal).getUsername();
 		}
-		return new ResponseEntity<>(projectService.findMyProjects(username, search, pageable), HttpStatus.OK);
+		return new ResponseEntity<>(projectService.findMyProjects(username), HttpStatus.OK);
 	}
 	
 	//admin and if the project owner belongs
