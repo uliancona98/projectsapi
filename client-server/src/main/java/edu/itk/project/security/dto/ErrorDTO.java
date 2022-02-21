@@ -1,27 +1,15 @@
 package edu.itk.project.security.dto;
 
 public class ErrorDTO {
-	private int status;
 	private String message;
-	private long timeStamp;
 	
 	public ErrorDTO() {
 		
 	}
 	
-	public ErrorDTO(int status, String message, long timeStamp) {
+	public ErrorDTO(String message) {
 		super();
-		this.status = status;
 		this.message = message;
-		this.timeStamp = timeStamp;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
 	}
 
 	public String getMessage() {
@@ -30,13 +18,5 @@ public class ErrorDTO {
 
 	public void setMessage(String message) {
 		this.message = message;
-	}
-
-	public long getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(long timeStamp) {
-		this.timeStamp = timeStamp;
 	}
 }

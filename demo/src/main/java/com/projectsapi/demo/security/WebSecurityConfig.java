@@ -1,4 +1,4 @@
-package com.projectsapi.demo.security;
+/*package com.projectsapi.demo.security;
 
 import javax.sql.DataSource;
 
@@ -44,5 +44,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().httpBasic();
 				
     }
-}
+}*/
 

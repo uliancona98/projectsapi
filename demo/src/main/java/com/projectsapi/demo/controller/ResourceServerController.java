@@ -1,4 +1,4 @@
-package edu.itk.project.security.controllers;
+package com.projectsapi.demo.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,4 +1,4 @@
-package com.projectsapi.demo.config;
+/*package com.projectsapi.demo.config;
 
 import javax.sql.DataSource;
 
@@ -23,3 +23,4 @@ public class WebConfig implements WebMvcConfigurer{
 		return dataSource;
 	}
 }
+*/

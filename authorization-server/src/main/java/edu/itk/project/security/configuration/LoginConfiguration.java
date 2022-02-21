@@ -29,7 +29,6 @@ public class LoginConfiguration {
 				.antMatchers("/images/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
-				.csrf().disable()
 				.formLogin().loginPage("/login");
 		return httpSecurity.build();
 	}
