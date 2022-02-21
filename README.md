@@ -17,10 +17,18 @@ This is a project that manages differents software projects and their tasks, in 
 In the main root run the command "docker-compose up"
 
 ### 3. Log in 
-Now, login in the redirect login form found in http://localhost:8080. The following users and passwords are present:
+http://10.5.0.6:9000/login
+
+Main url for endpoints:
+http://10.5.0.5:8080/
+
+Example: 
+http://10.5.0.5:8080/admin
+
+Users:
 #### Username: julio.vargas@theksquaregroup.com, Password: user, ROLE_USER
 #### Username: guillermo.ceme@theksquaregroup.com, Password: manager, ROLE_MANAGER
 #### Username: carlos.reyes@theksquaregroup.com, Password: admin, ROLE_ADMIN
 
 ## Swagger documentation 
-http://localhost:8090/swagger-ui/index.html
+http://10.5.0.5:8080/swagger-ui/index.html
