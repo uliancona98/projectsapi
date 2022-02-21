@@ -1,29 +1,22 @@
-Requisitos:
-    Tener instalado docker
-    
-Pasos para ejecutar el programa:
-Ejecutar el comando: docker-compose up
+# Projects Management Module
 
-Para autenticación se tiene las siguientes credenciales:
-1. usuario:
-uancona
-Contraseña:
-admin
+This is a project that manages differents software projects and their tasks, in order to track them.
 
-2. usuario:
-sbojorquez
-Contraseña:
-admin
+## Requirements
+- Docker desktop installed
 
-3. usuario:
-user
-Contraseña:
-admin
+## How to run the program
 
-4. usuario:
-ulisesa
-Contraseña:
-admin
+### 1. Open a command prompt in the main root
+In the main root run the command "docker-compose up"
 
-Para ver la documentacionen swagger:
+### 3. Log in 
+Now, login in the redirect login form found in http://localhost:8080. The following users and passwords are present:
+#### Username: uancona, Password: admin,
+#### Username: sbojorquez, Password: admin,
+#### Username: user, Password: admin,
+#### Username: ulisesa, Password: admin
+
+
+## Swagger documentation 
 http://localhost:8090/swagger-ui/index.html
