@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
@@ -90,7 +89,6 @@ public class ProjectController {
 			System.out.println(username+"HAS"+hasAdminRole);
 
 			return new ResponseEntity<>(projectService.findProjectById(projectId, username, hasAdminRole), HttpStatus.OK);*/
-			System.out.println("HIHIHIHIHIHI*********ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ"+projectId);
 			return new ResponseEntity<>(projectService.findProjectById(projectId), HttpStatus.OK);
 
 		}
@@ -100,6 +98,64 @@ public class ProjectController {
 			return new ResponseEntity<Object>(new ErrorDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
+
+	@GetMapping("/{projectId}/developers")
+	@Operation(summary = "Find specific project's developers", description = "Endpoint that retieves the list of project's developers", tags = { "projects" }) 
+	@ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "successful operation",
+                content = @Content(array = @ArraySchema(schema = @Schema(implementation = WorkerDTO.class)))),
+		@ApiResponse(responseCode = "404", description = "Project not found") ,
+		@ApiResponse(responseCode = "400", description = "Bad request")
+	})
+	public ResponseEntity<Object> getProjectDevelopers(@Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("projectId") Integer projectId){
+		try {
+			/*Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			String username = null;
+			if (principal instanceof UserDetails) {
+				username = ((UserDetails)principal).getUsername();
+			}
+			boolean hasAdminRole = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+			.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+
+			return new ResponseEntity<>(projectService.getProjectDevelopers(projectId, username, hasAdminRole), HttpStatus.OK);*/
+			return new ResponseEntity<>(projectService.getProjectDevelopers(projectId), HttpStatus.OK);
+
+		}
+		catch(NotFoundException ex) {
+			return new ResponseEntity<Object>(new ErrorDTO(ex.getMessage()), HttpStatus.NOT_FOUND);
+		}catch(UnsupportedOperationException ex){
+			return new ResponseEntity<Object>(new ErrorDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/{projectId}/disable")
+	@Operation(summary = "Disable an specific project", description = "Endpoint that disable an specific project", tags = { "projects" }) 
+	@ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "successful operation",
+                content = @Content(array = @ArraySchema(schema = @Schema(implementation = WorkerDTO.class)))),
+		@ApiResponse(responseCode = "404", description = "Project not found")
+	})
+	public ResponseEntity<Object> disableProject(@Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("projectId") Integer projectId){
+		try {
+			return new ResponseEntity<>(projectService.disableProjectById(projectId), HttpStatus.OK);
+		}catch(NotFoundException ex) {
+			return new ResponseEntity<Object>(new ErrorDTO(ex.getMessage()), HttpStatus.NOT_FOUND);
+		}
+	}
+
+	/*@GetMapping("/{username}")
+	@Operation(summary = "Find all projects", description = "Endpoint that retieves all projects", tags = { "projects" }) 
+	@ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "successful operation", 
+			content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectDTO.class)))) })
+	public ResponseEntity<Object> findMyProjects(@Parameter(description="Username of the current user authenticated", required=true) @PathVariable("username") String username){
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = null;
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails)principal).getUsername();
+		}
+		return new ResponseEntity<>(projectService.findMyProjects(username), HttpStatus.OK);
+	}*/
 
 
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)

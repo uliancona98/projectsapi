@@ -270,20 +270,76 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDTO editProject(ProjectRequest projectRequest, Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+		Optional<Project>optProject = projectRepository.findById(id);
+        if(optProject.isPresent()) {
+            Project project = optProject.get();
+            if(!project.getState().equals(ProjectStatus.disabled)){
+                project.setName(projectRequest.getName());
+                project.setDescription(projectRequest.getDescription());
+                project.setExpectedTime(projectRequest.getExpectedTime());
+                project.setUsedTime(0.0);
+                project.setStartDate(projectRequest.getStartDate());
+                project.setState(projectRequest.getState());
+                Optional<Worker> optWorker = workerRepository.findById(projectRequest.getProjectOwner());
+                if(optWorker.isPresent()){
+                    project.setProjectOwner(optWorker.get());
+                }else{
+                    throw new NotFoundException("Project owner was not found");
+                }
+                try{
+                    project.setDevelopers(projectRequest.getDevelopers().stream()	
+                    .map(developer -> workerRepository.findById(developer).orElseGet(null))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toSet()));                
+                }catch(Exception e){
+                    e.printStackTrace();
+                    throw new NotFoundException("Developer or developers were not found");
+                }
+                project = projectRepository.save(project);
+                return convertProjectToDTO(project);
+            }
+            throw new UnsupportedOperationException("Can't upload disabled projects");
+        }
+        throw new NotFoundException("Project " + id + " was not found");  
     }
 
     @Override
     public Set<WorkerDTO> editProjectDevelopers(List<Integer> developers, Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+		Optional<Project> optProject = projectRepository.findById(id);
+        if(optProject.isPresent()) {
+            Project project = optProject.get();
+            if(!project.getState().equals(ProjectStatus.disabled)){
+                try{
+                    project.setDevelopers(developers.stream()	
+                    .map(developer -> workerRepository.findById(developer).orElseGet(null))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toSet()));  
+                    project = projectRepository.save(project);
+                    return project.getDevelopers().stream()
+                    .map(this::convertDeveloperToDTO)
+                    .collect(Collectors.toSet());
+                }catch(Exception e){
+                    e.printStackTrace();
+                    throw new NotFoundException("Developer or developers were not found");
+                }		
+            }
+            throw new UnsupportedOperationException("Can't upload disabled projects");
+            
+        }
+        throw new NotFoundException("Project " + id + " was not found"); 
     }
 
     @Override
     public Set<WorkerDTO> getProjectDevelopers(Integer projectId) {
-        // TODO Auto-generated method stub
-        return null;
+        //check if is the project owner
+		Optional<Project> optProject = projectRepository.findById(projectId);
+        if(optProject.isPresent()) {
+            return optProject.get().getDevelopers().stream()
+            .map(this::convertDeveloperToDTO)
+            .collect(Collectors.toSet());
+        }
+        throw new NotFoundException("Project " + projectId + " was not found");
+        
     }
     
 }

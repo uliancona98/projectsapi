@@ -72,7 +72,7 @@ public class ClientServerController {
 
 	private static final String PROJECT_ENDPOINT_BASE_URL = PROJECTS_MANAGEMENT_MODULE_HOST + "/projects/{projectId}";
 	private static final String PROJECTS_ENDPOINT_BASE_URL = PROJECTS_MANAGEMENT_MODULE_HOST + "/projects";
-	private static final String GET_SELF_PROJECTS_URL = PROJECTS_MANAGEMENT_MODULE_HOST + "/projects/self";
+	private static final String GET_SELF_PROJECTS_URL = PROJECTS_MANAGEMENT_MODULE_HOST + "/projects/{username}";
 	private static final String PROJECTS_DEVELOPERS_URL = PROJECTS_MANAGEMENT_MODULE_HOST + "/projects/{projectId}/developers";
 
 	private static final String PROJECTS_DISABLE_URL = PROJECTS_MANAGEMENT_MODULE_HOST + "/projects/{projectId}/disable";
@@ -100,7 +100,7 @@ public class ClientServerController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/projects/{projectId}")
-	public Object getAllProjects(@RegisteredOAuth2AuthorizedClient("itk-client-authorization-code") OAuth2AuthorizedClient oauth2AuthorizedClient, @PathVariable("projectId") Integer projectId) {
+	public Object getProjectById(@RegisteredOAuth2AuthorizedClient("itk-client-authorization-code") OAuth2AuthorizedClient oauth2AuthorizedClient, @PathVariable("projectId") Integer projectId) {
 		return this.webClient
 				.get()
 				.uri(PROJECT_ENDPOINT_BASE_URL, projectId)
@@ -183,12 +183,12 @@ public class ClientServerController {
 				.block();
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/projects/self")
-	public Object getMyProjects(@RegisteredOAuth2AuthorizedClient("itk-client-authorization-code") OAuth2AuthorizedClient oauth2AuthorizedClient) {
+	/*@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/projects/{username}")
+	public Object getMyProjects(@RegisteredOAuth2AuthorizedClient("itk-client-authorization-code") OAuth2AuthorizedClient oauth2AuthorizedClient, @PathVariable("username") String username) {
 		return this.webClient
 				.get()
-				.uri(GET_SELF_PROJECTS_URL)
+				.uri(GET_SELF_PROJECTS_URL, username)
 				.attributes(oauth2AuthorizedClient(oauth2AuthorizedClient))
 				.exchangeToMono(response -> {
 					if (response.statusCode().isError()) {
@@ -198,7 +198,7 @@ public class ClientServerController {
 					}
 				})
 				.block();
-	}
+	}*/
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping("/projects")
@@ -220,7 +220,7 @@ public class ClientServerController {
 	@PostMapping("/projects/{projectId}/tasks")
 	public Object addProjectTask(
 			@RegisteredOAuth2AuthorizedClient("itk-client-authorization-code") OAuth2AuthorizedClient oauth2AuthorizedClient,
-			@PathVariable("projectId") long projectId, @RequestBody ProjectRequest request) {
+			@PathVariable("projectId") Integer projectId, @RequestBody ProjectRequest request) {
 		return this.webClient.post().uri(PROJECT_TASKS_ENDPOINT_BASE_URL, projectId).contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).body(Mono.just(request), ProjectRequest.class)
 				.attributes(oauth2AuthorizedClient(oauth2AuthorizedClient)).exchangeToMono(response -> {
