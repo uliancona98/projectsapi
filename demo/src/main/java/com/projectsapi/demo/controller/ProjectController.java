@@ -57,6 +57,18 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 
+    @Operation(summary = "Find all projects", description = "Endpoint that retieves all projects", tags = { "projects" }) 
+	@ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "successful operation", 
+                content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectDTO.class)))) })
+	@GetMapping
+	public ResponseEntity<Object> findAll(
+		@Parameter(description="Value to search") @RequestParam(name="search", required = false) String search,
+		@Parameter(description="Pageable object with parameters as: page, size, sort") Pageable pageable
+	){
+		return new ResponseEntity<>(projectService.findAll(search,pageable), HttpStatus.OK);
+	}
+
 	//admin and if the project owner belongs
 	@GetMapping("/{projectId}")
 	@Operation(summary = "Find specific project", description = "Endpoint that retieves an specific project", tags = { "projects" }) 
@@ -68,7 +80,7 @@ public class ProjectController {
 	})
 	public ResponseEntity<Object> getProjectById(@Parameter(description="Id of the project to be obtained. Cannot be empty.", required=true) @PathVariable("projectId") Integer projectId){
 		try {
-			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			/*Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			String username = null;
 			if (principal instanceof UserDetails) {
 				username = ((UserDetails)principal).getUsername();
@@ -77,7 +89,10 @@ public class ProjectController {
 			  .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
 			System.out.println(username+"HAS"+hasAdminRole);
 
-			return new ResponseEntity<>(projectService.findProjectById(projectId, username, hasAdminRole), HttpStatus.OK);
+			return new ResponseEntity<>(projectService.findProjectById(projectId, username, hasAdminRole), HttpStatus.OK);*/
+			System.out.println("HIHIHIHIHIHI*********ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ"+projectId);
+			return new ResponseEntity<>(projectService.findProjectById(projectId), HttpStatus.OK);
+
 		}
 		catch(NotFoundException ex) {
 			return new ResponseEntity<Object>(new ErrorDTO(ex.getMessage()), HttpStatus.NOT_FOUND);

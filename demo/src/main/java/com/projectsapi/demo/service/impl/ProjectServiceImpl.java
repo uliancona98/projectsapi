@@ -258,5 +258,32 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		throw new NotFoundException("Project " + id + " was not found");        
     }
+
+    @Override
+    public ProjectDTO findProjectById(Integer projectId) {
+        Optional<Project> optProject = projectRepository.findById(projectId);
+        if(optProject.isPresent()) {
+            return convertProjectToDTO(optProject.get());
+        }
+        throw new NotFoundException("Project " + projectId + " was not found");
+    }
+
+    @Override
+    public ProjectDTO editProject(ProjectRequest projectRequest, Integer id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Set<WorkerDTO> editProjectDevelopers(List<Integer> developers, Integer id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Set<WorkerDTO> getProjectDevelopers(Integer projectId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
 }

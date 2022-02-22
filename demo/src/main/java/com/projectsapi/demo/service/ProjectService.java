@@ -19,14 +19,19 @@ public interface ProjectService {
 	List<ProjectDTO> findMyProjects(String username);
 
 	ProjectDTO findProjectById(Integer projectId, String username, boolean isAdmin);
+	ProjectDTO findProjectById(Integer projectId);
 
 	ProjectDTO saveProject(ProjectRequest projectRequest);
 
 	ProjectDTO editProject(ProjectRequest projectRequest, Integer id, String username, boolean isAdmin);
-	
+	ProjectDTO editProject(ProjectRequest projectRequest, Integer id);
+
+
 	Set<WorkerDTO> editProjectDevelopers(List<Integer> developers, Integer id, String username, boolean isAdmin);
+	Set<WorkerDTO> editProjectDevelopers(List<Integer> developers, Integer id);
 
 	Set<WorkerDTO> getProjectDevelopers(Integer projectId, String username, boolean isAdmin);
+	Set<WorkerDTO> getProjectDevelopers(Integer projectId);
 
 	ProjectDTO disableProjectById(Integer id);
 

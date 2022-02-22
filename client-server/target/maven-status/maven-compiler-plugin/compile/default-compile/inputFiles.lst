@@ -1,5 +1,14 @@
-C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\dto\ErrorDTO.java
-C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\configurations\ClientServerConfiguration.java
+C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\dto\TaskUpdateRequest.java
+C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\dto\ProjectRequest.java
 C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\ClientServerApplication.java
+C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\dto\TaskRequest.java
+C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\dto\ProjectStatus.java
+C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\dto\WorkerDTO.java
+C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\dto\TaskStatus.java
+C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\dto\TaskType.java
+C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\dto\ErrorDTO.java
+C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\dto\TaskDTO.java
+C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\configurations\ClientServerConfiguration.java
 C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\controllers\ClientServerController.java
 C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\configurations\LoginConfiguration.java
+C:\Users\Equipo\Documents\Java\projectsapi\demo\client-server\src\main\java\edu\itk\project\security\dto\ProjectDTO.java

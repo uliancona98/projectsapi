@@ -7,7 +7,7 @@ This is a project that manages differents software projects and their tasks, in 
 
 ## How to run the program
 
-#### 1. Open a cmd prompt and run the following commands
+#### 1. Open a cmd prompt and run the following commands with admin permission
 ##### netsh int ip add addr 1 10.5.0.4/32 st=ac sk=tr
 ##### netsh int ip add addr 1 10.5.0.5/32 st=ac sk=tr
 ##### netsh int ip add addr 1 10.5.0.6/32 st=ac sk=tr
